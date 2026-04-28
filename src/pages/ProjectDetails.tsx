@@ -3,11 +3,18 @@ import { ChevronLeft, Plus, Calendar, Info, Loader2, AlertCircle } from 'lucide-
 import { useProjects } from '../features/projects/hooks/useProjects';
 import TaskManager from '@/features/tasks/components/TaskManager';
 import { Button } from '@/components/ui/button';
+import ConfirmDeleteDialog from '@/components/common/ConfirmDeleteDialog';
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const { projectQuery } = useProjects(id);
+  const { projectQuery, deleteProjectMutation } = useProjects(id);
   const { data: project, isLoading, isError } = projectQuery;
+
+  const handleDelete = () => {
+    if (id) {
+      deleteProjectMutation.mutate(id);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -47,6 +54,12 @@ const ProjectDetails = () => {
             <Calendar size={14} />
             <span>Created on {new Date(project.createdAt).toLocaleDateString()}</span>
           </div>
+        </div>
+        <div className='ml-auto'>
+          <ConfirmDeleteDialog
+            onConfirm={handleDelete}
+            itemName={project.name}
+          />
         </div>
       </div>
 
