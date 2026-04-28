@@ -12,13 +12,14 @@ const Dashboard = () => {
 
   const handleCreateProject = async (data: CreateProjectDto) => {
     const {name, description} = data
-    if (name && description) {
-      try {
-        await createProjectMutation.mutateAsync({ name, description });
-        toast.success("Project haz been created.")
-      } catch (error) {
-        toast.error("Error creating project.")
-      }
+    if (!name) {
+      toast.error("\"name\" field is required")
+    }
+    try {
+      await createProjectMutation.mutateAsync({ name, description });
+      toast.success("Project haz been created.")
+    } catch (error) {
+      toast.error("Error creating project.")
     }
   };
 

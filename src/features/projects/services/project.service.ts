@@ -8,8 +8,6 @@ export const projectService = {
   },
 
   createProject: async (project: CreateProjectDto): Promise<Project> => {
-    const { data } = await api.get<Project>('/projects', { params: project }); // O api.post dependiendo de tu backend
-    // Nota: Según el backend que construimos antes, es un POST
     const response = await api.post<Project>('/projects', project);
     return response.data;
   },
