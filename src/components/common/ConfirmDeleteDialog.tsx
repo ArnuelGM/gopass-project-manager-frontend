@@ -14,7 +14,7 @@ import { Trash2, Loader2 } from "lucide-react";
 import type { ReactElement } from "react";
 
 interface ConfirmDeleteDialogProps {
-  itemName: string;
+  itemName?: string;
   onConfirm: () => void;
   isLoading?: boolean;
   trigger?: ReactElement;
@@ -40,7 +40,7 @@ const ConfirmDeleteDialog = ({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete 
-            <span className="font-bold text-gray-900"> {itemName} </span> 
+            {itemName ? (<span className="font-bold text-gray-900"> {itemName } </span>) : " this item " }
             and all its related data.
           </AlertDialogDescription>
         </AlertDialogHeader>
