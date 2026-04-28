@@ -3,23 +3,23 @@ import { useProjects } from '../features/projects/hooks/useProjects';
 import { Card, CardContent } from '@/components/ui/card';
 import { CardProjectItem } from '@/features/projects/components/CardProjectItem';
 import { CreateProjectButtonDialog } from '@/features/projects/components/CreateProjectButtonDialog';
+import type { CreateProjectDto } from '@/features/projects/types/project.types';
+import { toast } from 'sonner'
 
 const Dashboard = () => {
   const { projectsQuery, createProjectMutation } = useProjects();
   const { data: projects, isLoading, isError } = projectsQuery;
 
-  const handleCreateProject = async (data: unknown) => {
-    console.log(data)
-    /* const name = prompt('Project Name:');
-    const description = prompt('Project Description:');
-
+  const handleCreateProject = async (data: CreateProjectDto) => {
+    const {name, description} = data
     if (name && description) {
       try {
         await createProjectMutation.mutateAsync({ name, description });
+        toast.success("Project haz been created.")
       } catch (error) {
-        alert('Error creating project');
+        toast.error("Error creating project.")
       }
-    } */
+    }
   };
 
   if (isLoading) {
@@ -37,14 +37,6 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold text-gray-900">Projects Dashboard</h1>
           <p className="text-sm text-gray-600">Manage and track your ongoing projects.</p>
         </div>
-        {/* <Button 
-          onClick={handleCreateProject}
-          disabled={createProjectMutation.isPending}
-          size='lg'
-        >
-          {createProjectMutation.isPending ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
-          New Project
-        </Button> */}
         <CreateProjectButtonDialog
           disabled={createProjectMutation.isPending}
           isPending={createProjectMutation.isPending}

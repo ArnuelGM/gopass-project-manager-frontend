@@ -13,25 +13,28 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Loader2 } from 'lucide-react';
+import type { CreateProjectDto } from "../types/project.types"
 
 interface CreateProjectButtonDialogProps {
   disabled: boolean;
   isPending: boolean;
-  onSubmit?: (data: unknown) => void;
+  onSubmit?: (data: CreateProjectDto) => void;
 }
 
-export const CreateProjectButtonDialog = ({ disabled, isPending }: CreateProjectButtonDialogProps) => {
+export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: CreateProjectButtonDialogProps) => {
 
-  const hadleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.target)
-    console.log(event)
-    console.log(form)
+    const data = {
+      name: String(form.get("name")),
+      description: String(form.get("description"))
+    }
+    onSubmit && onSubmit(data)
   }
 
   return (
     <Dialog>
-      <form onSubmit={hadleSubmit}>
         <DialogTrigger asChild>
           <Button size="lg" disabled={disabled}>
             {isPending ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
@@ -39,30 +42,33 @@ export const CreateProjectButtonDialog = ({ disabled, isPending }: CreateProject
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle>New Project</DialogTitle>
-            <DialogDescription>
-              Create a new project.
-            </DialogDescription>
-          </DialogHeader>
-          <FieldGroup>
-            <Field>
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Project name" type="text" />
-            </Field>
-            <Field>
-              <Label htmlFor="description">Description</Label>
-              <Input id="description" name="description" />
-            </Field>
-          </FieldGroup>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button type="submit">Save</Button>
-          </DialogFooter>
+          <form id="new-project-form" onSubmit={handleSubmit}>
+            <DialogHeader>
+              <DialogTitle>New Project</DialogTitle>
+              <DialogDescription>
+                Create a new project.
+              </DialogDescription>
+            </DialogHeader>
+            <FieldGroup>
+              <Field>
+                <Label htmlFor="name">Name</Label>
+                <Input name="name" form="new-project-form" placeholder="Project name" type="text" />
+              </Field>
+              <Field>
+                <Label htmlFor="description">Description</Label>
+                <Input form="new-project-form" name="description" type="text" placeholder="Project description" />
+              </Field>
+            </FieldGroup>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <DialogClose asChild>
+                <Button type="submit" form="new-project-form">Save</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
         </DialogContent>
-      </form>
     </Dialog>
   )
 }
