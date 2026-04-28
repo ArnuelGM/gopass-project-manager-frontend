@@ -1,0 +1,84 @@
+import { useParams, Link } from 'react-router-dom';
+import { ChevronLeft, Plus, Calendar, Info, Loader2, AlertCircle } from 'lucide-react';
+import { useProjects } from '../features/projects/hooks/useProjects';
+import TaskManager from '@/features/tasks/components/TaskManager';
+import { Button } from '@/components/ui/button';
+
+const ProjectDetails = () => {
+  const { id } = useParams<{ id: string }>();
+  const { projectQuery } = useProjects(id);
+  const { data: project, isLoading, isError } = projectQuery;
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-64 gap-4">
+        <Loader2 className="animate-spin text-indigo-600" size={40} />
+        <p className="text-gray-500 animate-pulse">Loading project details...</p>
+      </div>
+    );
+  }
+
+  if (isError || !project) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-xl flex items-center gap-4">
+        <AlertCircle size={24} />
+        <div>
+          <h3 className="font-bold">Error</h3>
+          <p>Could not load project details. Please verify the ID or your connection.</p>
+          <Link to="/projects" className="text-sm underline mt-2 block">Back to Dashboard</Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header & Back Button */}
+      <div className="flex items-center gap-4">
+        <Link 
+          to="/projects" 
+          className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all border border-transparent hover:border-gray-200"
+        >
+          <ChevronLeft size={24} className="text-gray-600" />
+        </Link>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Calendar size={14} />
+            <span>Created on {new Date(project.createdAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Project Info Card */}
+      <div>
+        <div className="flex items-start gap-3 mb-4">
+          <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+            <Info size={20} />
+          </div>
+          <div>
+            <p className="text-gray-700 mt-1 leading-relaxed">
+              {project.description || 'No description provided for this project.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tasks Section Placeholder */}
+      <div className="bg-gray-50 border-t border-gray-100">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-bold text-gray-900">Project Tasks</h3>
+          <Button>
+            <Plus size={18} />
+            Add New Task
+          </Button>
+        </div>
+
+        {id && <TaskManager projectId={id} />}
+      </div>
+
+    </div>
+  );
+};
+
+export default ProjectDetails;
