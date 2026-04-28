@@ -1,20 +1,29 @@
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Plus, Calendar, Info, Loader2, AlertCircle } from 'lucide-react';
+import { ChevronLeft, Calendar, Info, Loader2, AlertCircle } from 'lucide-react';
 import { useProjects } from '../features/projects/hooks/useProjects';
 import TaskManager from '@/features/tasks/components/TaskManager';
-import { Button } from '@/components/ui/button';
 import ConfirmDeleteDialog from '@/components/common/ConfirmDeleteDialog';
+import { CreateTaskButtonDialog } from '@/features/tasks/components/CreateTaskButtonDialog';
+import { useTasks } from '@/features/tasks/hooks/useTasks';
+import type { CreateTaskDto } from '@/features/tasks/types/task.types';
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { projectQuery, deleteProjectMutation } = useProjects(id);
   const { data: project, isLoading, isError } = projectQuery;
+  const { createTaskMutation, isPending: tasksPending } = useTasks(project.id)
 
   const handleDelete = () => {
     if (id) {
       deleteProjectMutation.mutate(id);
     }
   };
+
+  const hanldeCreateTask = (data: CreateTaskDto) => {
+    if(project?.id) {
+      createTaskMutation.mutate(data)
+    }
+  }
 
   if (isLoading) {
     return (
@@ -81,10 +90,16 @@ const ProjectDetails = () => {
       <div className="bg-gray-50 border-t border-gray-100">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-gray-900">Project Tasks</h3>
-          <Button>
+          {/* <Button>
             <Plus size={18} />
             Add New Task
-          </Button>
+          </Button> */}
+          <CreateTaskButtonDialog
+            projectId={project.id}
+            onSubmit={hanldeCreateTask}
+            isPending={tasksPending}
+            disabled={tasksPending}
+          />
         </div>
 
         {id && <TaskManager projectId={id} />}

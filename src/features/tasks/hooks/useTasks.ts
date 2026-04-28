@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { taskService } from '../services/task.service';
+import type { CreateTaskDto } from '../types/task.types';
 
 export const useTasks = (projectId: string) => {
   const queryClient = useQueryClient();
@@ -8,6 +9,13 @@ export const useTasks = (projectId: string) => {
     queryKey: ['tasks', projectId],
     queryFn: () => taskService.getTasksByProject(projectId),
     enabled: !!projectId,
+  });
+
+  const createTaskMutation = useMutation({
+    mutationFn: (newTask: CreateTaskDto) => taskService.createTask(newTask),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', projectId] });
+    },
   });
 
   const deleteTaskMutation = useMutation({
@@ -19,6 +27,7 @@ export const useTasks = (projectId: string) => {
 
   return {
     ...tasksQuery,
+    createTaskMutation,
     deleteTaskMutation
   }
 };

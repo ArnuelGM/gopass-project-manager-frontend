@@ -13,22 +13,24 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Loader2 } from 'lucide-react';
-import type { CreateProjectDto } from "../types/project.types"
+import type { CreateTaskDto } from "../types/task.types"
 
-interface CreateProjectButtonDialogProps {
+interface CreateTaskButtonDialogProps {
+  projectId: string;
   disabled: boolean;
   isPending: boolean;
-  onSubmit?: (data: CreateProjectDto) => void;
+  onSubmit?: (data: CreateTaskDto) => void;
 }
 
-export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: CreateProjectButtonDialogProps) => {
+export const CreateTaskButtonDialog = ({ disabled, onSubmit, isPending, projectId }: CreateTaskButtonDialogProps) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.target)
     const data = {
-      name: String(form.get("name")),
-      description: String(form.get("description"))
+      title: String(form.get("title")),
+      description: String(form.get("description")),
+      projectId
     }
     onSubmit && onSubmit(data)
   }
@@ -38,25 +40,25 @@ export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: Cre
         <DialogTrigger asChild>
           <Button size="lg" disabled={disabled}>
             {isPending ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
-            New Project
+            Add New Task
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle>New Project</DialogTitle>
+            <DialogTitle>New task</DialogTitle>
             <DialogDescription>
-              Create a new project.
+              Create a new task.
             </DialogDescription>
           </DialogHeader>
-          <form id="new-project-form" onSubmit={handleSubmit}>
+          <form id="new-task-form" onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
-                <Label htmlFor="name">Name</Label>
-                <Input name="name" form="new-project-form" placeholder="Project name" type="text" />
+                <Label htmlFor="title">Title</Label>
+                <Input name="title" form="new-task-form" placeholder="Task title" type="text" />
               </Field>
               <Field>
                 <Label htmlFor="description">Description</Label>
-                <Input form="new-project-form" name="description" type="text" placeholder="Project description" />
+                <Input form="new-task-form" name="description" type="text" placeholder="Task description" />
               </Field>
             </FieldGroup>
           </form>
@@ -65,7 +67,7 @@ export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: Cre
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button type="submit" form="new-project-form">Save</Button>
+              <Button type="submit" form="new-task-form">Save</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

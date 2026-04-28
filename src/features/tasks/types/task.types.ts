@@ -19,3 +19,11 @@ export interface Task {
   finishDate: string | null;
   finishedAt: string | null;
 }
+
+export interface CreateTaskDto {
+  title: string;
+  projectId: string;
+  description?: string | null;
+  status?: TaskStatus;
+  finishDate?: string | null;
+}
