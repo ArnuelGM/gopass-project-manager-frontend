@@ -6,8 +6,15 @@ export const TaskStatus = {
   BLOCKED: 'blocked',
 } as const;
 
+export const TaskPriority = {
+  HIGH: 'high',
+  MEDIUM: 'medium',
+  LOW: 'low'
+} as const;
+
 // Esto crea el tipo basado en los valores del objeto
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus];
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority];
 
 export interface Task {
   id: string;
@@ -15,6 +22,7 @@ export interface Task {
   title: string;
   description: string | null;
   status: TaskStatus;
+  priority: TaskPriority;
   createdAt: string;
   finishDate: string | null;
   finishedAt: string | null;

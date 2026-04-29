@@ -1,7 +1,6 @@
 import { ContextMenu, ContextMenuContent, ContextMenuGroup, ContextMenuRadioItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { TaskStatus, type Task } from "../types/task.types"
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export interface TaskStatusesMenuChangerProps {
   task: Task;
@@ -37,7 +36,14 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
       <ContextMenuContent className="w-48">
         <ContextMenuGroup>
           {TASKS_STATUSES.map((taskStatus) => (
-            <ContextMenuRadioItem value={taskStatus} onClick={() => onChange(task, taskStatus)} disabled={taskStatus === task.status}>
+            <ContextMenuRadioItem
+              value={taskStatus}
+              onClick={(event) => {
+                event.stopPropagation();
+                if (taskStatus === task.status) return;
+                onChange(task, taskStatus)
+              }}
+            >
               {getStatusBadge(taskStatus)}
             </ContextMenuRadioItem>
           ))}

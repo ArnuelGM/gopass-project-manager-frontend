@@ -6,14 +6,13 @@ import {
   SheetDescription,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Calendar, CheckCircle2, Clock, FileText, Info } from "lucide-react";
-import { type Task, TaskStatus } from "../types/task.types";
+import { type Task, TaskPriority, TaskStatus } from "../types/task.types";
 import { useTasks } from "../hooks/useTasks";
 import { TaskStatusesMenuChanger } from "./TasksStatusesListChanger";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { TaskPriorityMenuChanger } from "./TasksPriorityListChanger";
 
 interface TaskDetailProps {
   task: Task | null;
@@ -43,6 +42,13 @@ const TaskDetail = ({ task, isOpen, onClose }: TaskDetailProps) => {
     });
   }
 
+  const handleUpdateTaskPriority = (task: Task, priority: TaskPriority) => {
+    updateTaskMutation.mutate({
+      taskId: task.id,
+      updates: { priority },
+    });
+  }
+
   const formatDate = (date: string | null) => 
     date ? new Date(date).toLocaleDateString(undefined, { dateStyle: 'long' }) : 'Not set';
 
@@ -54,6 +60,10 @@ const TaskDetail = ({ task, isOpen, onClose }: TaskDetailProps) => {
             <TaskStatusesMenuChanger
               task={currentTask}
               onChange={handleUpdateTaskStatus}
+            />
+            <TaskPriorityMenuChanger
+              task={currentTask}
+              onChange={handleUpdateTaskPriority}
             />
           </div>
           <SheetTitle className="text-2xl font-bold leading-tight">

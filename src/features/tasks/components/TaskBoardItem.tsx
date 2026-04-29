@@ -1,10 +1,11 @@
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Trash2 } from "lucide-react";
-import { type Task } from '../types/task.types';
+import { TaskPriority, type Task } from '../types/task.types';
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog";
 import { useTasks } from "../hooks/useTasks";
 import { Button } from "@/components/ui/button";
 import { useDraggable } from "@dnd-kit/react";
+import { TaskPriorityMenuChanger } from "./TasksPriorityListChanger";
 
 interface TaskBoardItemProps {
   task: Task;
@@ -12,7 +13,7 @@ interface TaskBoardItemProps {
 }
 
 const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
-  const { deleteTaskMutation } = useTasks(task.projectId);
+  const { deleteTaskMutation, updateTaskMutation } = useTasks(task.projectId);
   const { ref } = useDraggable({ id: task.id, data: task })
 
   const formattedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
@@ -26,9 +27,22 @@ const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
     deleteTaskMutation.mutate(task.id);
   }
 
+  const handleUpdateTaskPriority = (task: Task, priority: TaskPriority) => {
+    updateTaskMutation.mutate({
+      taskId: task.id,
+      updates: { priority }
+    })
+  }
+
   return (
     <Card className="bg-white border-0 mt-px group" ref={ref} onClick={() => onTaskClick(task)}>
       <CardHeader>
+        <CardAction>
+          <TaskPriorityMenuChanger
+            task={task}
+            onChange={handleUpdateTaskPriority}
+          />
+        </CardAction>
         <CardTitle>
           <h4 className="font-normal text-sm text-gray-800 leading-snug">{task.title}</h4>
         </CardTitle>

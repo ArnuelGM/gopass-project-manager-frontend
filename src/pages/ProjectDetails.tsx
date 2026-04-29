@@ -6,6 +6,7 @@ import ConfirmDeleteDialog from '@/components/common/ConfirmDeleteDialog';
 import { CreateTaskButtonDialog } from '@/features/tasks/components/CreateTaskButtonDialog';
 import { useTasks } from '@/features/tasks/hooks/useTasks';
 import type { CreateTaskDto } from '@/features/tasks/types/task.types';
+import { toast } from 'sonner'
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +22,10 @@ const ProjectDetails = () => {
 
   const hanldeCreateTask = (data: CreateTaskDto) => {
     if(project?.id) {
+      if (!data.title) {
+        toast.error("The field \"title\" is required.")
+        return;
+      }
       createTaskMutation.mutate(data)
     }
   }

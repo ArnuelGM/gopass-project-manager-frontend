@@ -1,11 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { TaskStatus, type Task } from '../types/task.types';
+import { TaskPriority, TaskStatus, type Task } from '../types/task.types';
 import { TaskStatusesMenuChanger } from "./TasksStatusesListChanger";
 import { useTasks } from "../hooks/useTasks";
 import { Info, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { TaskPriorityMenuChanger } from "./TasksPriorityListChanger";
 
 interface TasksListViewProps {
   tasks: Task[];
@@ -36,12 +37,30 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
     })
   }
 
+  const handleUpdateTaskPriority = (task: Task, priority: TaskPriority) => {
+    updateTaskMutation.mutate({
+      taskId: task.id,
+      updates: { priority }
+    })
+  }
+
   return (
     <div className="border rounded-md bg-white">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Task Title</TableHead>
+            <TableHead className="w-[130px]">
+              <Tooltip>
+                <TooltipTrigger className="flex gap-2 items-center">
+                  <Info size={14} />
+                  Priority
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Right click on any priority to change</p>
+                </TooltipContent>
+              </Tooltip>
+            </TableHead>
             <TableHead className="w-[200px]">Created</TableHead>
             <TableHead className="w-[130px]">
               <Tooltip>
@@ -68,6 +87,12 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
             tasks.map((task) => (
               <TableRow key={task.id} className="group" onClick={() => onTaskClick && onTaskClick(task)}>
                 <TableCell className="font-normal">{task.title}</TableCell>
+                <TableCell>
+                  <TaskPriorityMenuChanger
+                    task={task}
+                    onChange={handleUpdateTaskPriority}
+                  />
+                </TableCell>
                 <TableCell className="text-slate-400">{formatDate(task.createdAt)}</TableCell>
                 <TableCell>
                   <TaskStatusesMenuChanger
