@@ -38,7 +38,7 @@ export const CreateTaskButtonDialog = ({ disabled, onSubmit, isPending, projectI
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button size="lg" disabled={disabled}>
+          <Button size="lg" disabled={disabled} className="cursor-pointer">
             {isPending ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
             Add New Task
           </Button>
@@ -64,10 +64,10 @@ export const CreateTaskButtonDialog = ({ disabled, onSubmit, isPending, projectI
           </form>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="cursor-pointer">Cancel</Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button type="submit" form="new-task-form">Save</Button>
+              <Button type="submit" form="new-task-form" className="cursor-pointer">Save</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

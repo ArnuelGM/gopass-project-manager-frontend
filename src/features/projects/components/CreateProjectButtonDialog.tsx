@@ -36,7 +36,7 @@ export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: Cre
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button size="lg" disabled={disabled}>
+          <Button size="lg" disabled={disabled} className="cursor-pointer">
             {isPending ? <Loader2 className="animate-spin" size={20} /> : <Plus size={20} />}
             New Project
           </Button>
@@ -62,10 +62,10 @@ export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: Cre
           </form>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" className="cursor-pointer">Cancel</Button>
             </DialogClose>
             <DialogClose asChild>
-              <Button type="submit" form="new-project-form">Save</Button>
+              <Button type="submit" form="new-project-form" className="cursor-pointer">Save</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

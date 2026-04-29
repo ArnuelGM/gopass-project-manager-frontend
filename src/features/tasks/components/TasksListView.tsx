@@ -85,7 +85,7 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
             </TableRow>
           ) : (
             tasks.map((task) => (
-              <TableRow key={task.id} className="group" onClick={() => onTaskClick && onTaskClick(task)}>
+              <TableRow key={task.id} className="group cursor-pointer" onClick={() => onTaskClick && onTaskClick(task)}>
                 <TableCell className="font-normal">{task.title}</TableCell>
                 <TableCell>
                   <TaskPriorityMenuChanger

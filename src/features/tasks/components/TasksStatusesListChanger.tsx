@@ -30,7 +30,7 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger>
+      <ContextMenuTrigger className="cursor-pointer">
         {getStatusBadge(task.status)}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-48">
@@ -38,6 +38,7 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
           {TASKS_STATUSES.map((taskStatus) => (
             <ContextMenuRadioItem
               value={taskStatus}
+              className="cursor-pointer"
               onClick={(event) => {
                 event.stopPropagation();
                 if (taskStatus === task.status) return;

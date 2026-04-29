@@ -45,14 +45,14 @@ const ConfirmDeleteDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading} className="cursor-pointer">Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
               e.preventDefault();
               onConfirm();
             }}
             disabled={isLoading}
-            className="bg-red-600 hover:bg-red-700 focus:ring-red-600 min-w-[100px]"
+            className="bg-red-600 hover:bg-red-700 focus:ring-red-600 min-w-[100px] cursor-pointer"
           >
             {isLoading ? (
               <Loader2 className="animate-spin mr-2" size={16} />

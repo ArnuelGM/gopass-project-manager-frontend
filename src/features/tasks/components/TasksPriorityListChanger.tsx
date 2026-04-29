@@ -32,7 +32,7 @@ export const TaskPriorityMenuChanger = ({ task, onChange }: TaskPriorityMenuChan
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger>
+      <ContextMenuTrigger className="cursor-pointer">
         {getPriorityBadge(task.priority)}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-48">
@@ -40,6 +40,7 @@ export const TaskPriorityMenuChanger = ({ task, onChange }: TaskPriorityMenuChan
           {TASKS_PRIORITIES.map((taskPriority) => (
             <ContextMenuRadioItem 
               value={taskPriority}
+              className="cursor-pointer"
               onClick={(event) => {
                 event.stopPropagation();
                 if(taskPriority === task.priority) return;

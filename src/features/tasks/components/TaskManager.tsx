@@ -38,10 +38,10 @@ const TaskManager = ({ projectId }: TaskManagerProps) => {
         <Tabs value={view} onValueChange={setView} className="w-full">
           <div className="flex justify-between items-center mb-4">
             <TabsList variant='line'>
-              <TabsTrigger value="list" className="flex gap-2">
+              <TabsTrigger value="list" className="flex gap-2 cursor-pointer">
                 <TableOfContents size={16} /> List
               </TabsTrigger>
-              <TabsTrigger value="board" className="flex gap-2">
+              <TabsTrigger value="board" className="flex gap-2 cursor-pointer">
                 <Kanban size={16} /> Board
               </TabsTrigger>
             </TabsList>

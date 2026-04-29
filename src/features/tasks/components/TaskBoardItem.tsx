@@ -35,7 +35,7 @@ const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
   }
 
   return (
-    <Card className="bg-white border-0 mt-px group" ref={ref} onClick={() => onTaskClick(task)}>
+    <Card className="bg-white border-0 mt-px group cursor-pointer" ref={ref} onClick={() => onTaskClick(task)}>
       <CardHeader>
         <CardAction>
           <TaskPriorityMenuChanger
@@ -61,7 +61,7 @@ const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+                className="cursor-pointer h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
               >
                 <Trash2 size={14} />
               </Button>

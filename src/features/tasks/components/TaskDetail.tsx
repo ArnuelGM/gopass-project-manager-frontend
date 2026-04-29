@@ -121,7 +121,7 @@ const TaskDetail = ({ task, isOpen, onClose }: TaskDetailProps) => {
         <SheetFooter className="mt-6">
           {currentTask.status !== TaskStatus.DONE && (
             <Button 
-              className="w-full bg-green-600 hover:bg-green-700 text-white gap-2"
+              className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 cursor-pointer"
               onClick={handleMarkAsDone}
               disabled={updateTaskMutation.isPending}
             >
