@@ -32,14 +32,7 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
   return (
     <ContextMenu>
       <ContextMenuTrigger>
-        <Tooltip>
-          <TooltipTrigger>
-            {getStatusBadge(task.status)}
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Right click to change</p>
-          </TooltipContent>
-        </Tooltip>
+        {getStatusBadge(task.status)}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-48">
         <ContextMenuGroup>

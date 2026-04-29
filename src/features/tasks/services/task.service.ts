@@ -7,6 +7,11 @@ export const taskService = {
     return data;
   },
 
+  getTaskById: async (taskId: string): Promise<Task> => {
+    const { data } = await api.get<Task>(`/tasks/${taskId}`);
+    return data;
+  },
+
   createTask: async (task: CreateTaskDto): Promise<Task> => {
     const { data } = await api.post<Task>('/tasks', task);
     return data;

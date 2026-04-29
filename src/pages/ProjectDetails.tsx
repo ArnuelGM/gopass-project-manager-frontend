@@ -11,7 +11,7 @@ const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { projectQuery, deleteProjectMutation } = useProjects(id);
   const { data: project, isLoading, isError } = projectQuery;
-  const { createTaskMutation, isPending: tasksPending } = useTasks(project?.id)
+  const { createTaskMutation } = useTasks(project?.id)
 
   const handleDelete = () => {
     if (id) {
@@ -90,15 +90,11 @@ const ProjectDetails = () => {
       <div className="bg-gray-50 border-t border-gray-100">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-gray-900">Project Tasks</h3>
-          {/* <Button>
-            <Plus size={18} />
-            Add New Task
-          </Button> */}
           <CreateTaskButtonDialog
             projectId={project.id}
             onSubmit={hanldeCreateTask}
-            isPending={tasksPending}
-            disabled={tasksPending}
+            isPending={createTaskMutation.isPending}
+            disabled={createTaskMutation.isPending}
           />
         </div>
 

@@ -8,9 +8,10 @@ import { useDraggable } from "@dnd-kit/react";
 
 interface TaskBoardItemProps {
   task: Task;
+  onTaskClick?: (task: Task) => void;
 }
 
-const TaskBoardItem = ({ task }: TaskBoardItemProps) => {
+const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
   const { deleteTaskMutation } = useTasks(task.projectId);
   const { ref } = useDraggable({ id: task.id, data: task })
 
@@ -24,7 +25,7 @@ const TaskBoardItem = ({ task }: TaskBoardItemProps) => {
   }
 
   return (
-    <Card className="bg-white border-0 mt-px group" ref={ref}>
+    <Card className="bg-white border-0 mt-px group" ref={ref} onClick={() => onTaskClick(task)}>
       <CardHeader>
         <CardTitle>
           <h4 className="font-normal text-sm text-gray-800 leading-snug">{task.title}</h4>
@@ -36,19 +37,21 @@ const TaskBoardItem = ({ task }: TaskBoardItemProps) => {
           <span>{formattedDate}</span>
         </div>
 
-        <ConfirmDeleteDialog
-          onConfirm={handleDelete}
-          isLoading={deleteTaskMutation.isPending}
-          trigger={
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
-            >
-              <Trash2 size={14} />
-            </Button>
-          }
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <ConfirmDeleteDialog
+            onConfirm={handleDelete}
+            isLoading={deleteTaskMutation.isPending}
+            trigger={
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+              >
+                <Trash2 size={14} />
+              </Button>
+            }
+          />
+        </div>
       </CardFooter>
     </Card>
   );

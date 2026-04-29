@@ -6,9 +6,10 @@ import TaskBoardItem from './TaskBoardItem';
 interface DroppableColumnProps {
   column: { id: TaskStatus; title: string; color: string };
   tasks: Task[];
+  onTaskClick?: (task: Task) => void;
 }
 
-export const DroppableColumn = ({ column, tasks }: DroppableColumnProps) => {
+export const DroppableColumn = ({ column, tasks, onTaskClick }: DroppableColumnProps) => {
   const { ref, isDropTarget } = useDroppable({
     id: column.id,
     data: column
@@ -34,7 +35,7 @@ export const DroppableColumn = ({ column, tasks }: DroppableColumnProps) => {
         <CardContent className="px-3 pb-4 flex-1 overflow-y-auto scrollbar-thin">
           <div className="flex flex-col gap-3 min-h-[150px]">
             {tasks.map((task) => (
-              <TaskBoardItem key={task.id} task={task} />
+              <TaskBoardItem key={task.id} task={task} onTaskClick={onTaskClick} />
             ))}
           </div>
         </CardContent>

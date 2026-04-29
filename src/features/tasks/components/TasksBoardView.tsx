@@ -6,9 +6,10 @@ import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react";
 interface TasksBoardViewProps {
   tasks: Task[];
   projectId: string;
+  onTaskClick?: (task: Task) => void;
 }
 
-export const TasksBoardView = ({ tasks, projectId }: TasksBoardViewProps) => {
+export const TasksBoardView = ({ tasks, projectId, onTaskClick }: TasksBoardViewProps) => {
   
   const { updateTaskMutation } = useTasks(projectId)
 
@@ -49,6 +50,7 @@ export const TasksBoardView = ({ tasks, projectId }: TasksBoardViewProps) => {
             key={column.id}
             column={column}
             tasks={tasksGroups[column.id] ?? []}
+            onTaskClick={onTaskClick}
           />
         ))}
       </div>

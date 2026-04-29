@@ -2,13 +2,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { taskService } from '../services/task.service';
 import type { CreateTaskDto, Task } from '../types/task.types';
 
-export const useTasks = (projectId: string) => {
+export const useTasks = (projectId: string, taskId?: string) => {
   const queryClient = useQueryClient();
 
   const tasksQuery = useQuery({
     queryKey: ['tasks', projectId],
     queryFn: () => taskService.getTasksByProject(projectId),
     enabled: !!projectId,
+  });
+
+  const taskDetailQuery = useQuery({
+    queryKey: ['task', taskId],
+    queryFn: () => taskService.getTaskById(taskId!), // Asumiendo que existe en el service
+    enabled: !!taskId,
   });
 
   const createTaskMutation = useMutation({
@@ -21,8 +27,9 @@ export const useTasks = (projectId: string) => {
   const updateTaskMutation = useMutation({
     mutationFn: ({ taskId, updates }: { taskId: string, updates: Partial<Task> }) => 
       taskService.updateTask(taskId, updates),
-    onSuccess: () => {
+    onSuccess: (updatedTask) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', projectId] });
+      queryClient.setQueryData(['task', updatedTask.id], updatedTask);
     },
   });
 
@@ -34,9 +41,18 @@ export const useTasks = (projectId: string) => {
   });
 
   return {
-    ...tasksQuery,
+    // Datos y estados de carga
+    tasks: tasksQuery.data || [],
+    isLoading: tasksQuery.isLoading,
+    isError: tasksQuery.isError,
+    
+    // Detalle de tarea individual
+    taskDetail: taskDetailQuery.data,
+    isDetailLoading: taskDetailQuery.isLoading,
+
+    // Operaciones
     createTaskMutation,
     updateTaskMutation,
-    deleteTaskMutation
+    deleteTaskMutation,
   }
 };

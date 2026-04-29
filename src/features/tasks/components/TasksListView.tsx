@@ -2,16 +2,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { TaskStatus, type Task } from '../types/task.types';
 import { TaskStatusesMenuChanger } from "./TasksStatusesListChanger";
 import { useTasks } from "../hooks/useTasks";
-import { Trash2 } from "lucide-react";
+import { Info, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface TasksListViewProps {
   tasks: Task[];
   projectId: string;
+  onTaskClick?: (task: Task) => void
 }
 
-export const TasksListView = ({ tasks, projectId }: TasksListViewProps) => {
+export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewProps) => {
 
   const { updateTaskMutation, deleteTaskMutation } = useTasks(projectId)
 
@@ -38,8 +40,18 @@ export const TasksListView = ({ tasks, projectId }: TasksListViewProps) => {
         <TableHeader>
           <TableRow>
             <TableHead>Task Title</TableHead>
-            <TableHead className="w-[150px] text-right">Created</TableHead>
-            <TableHead className="w-[130px] text-right">Status</TableHead>
+            <TableHead className="w-[200px]">Created</TableHead>
+            <TableHead className="w-[130px]">
+              <Tooltip>
+                <TooltipTrigger className="flex gap-2 items-center">
+                  <Info size={14} />
+                  Status
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Right click on any status to change</p>
+                </TooltipContent>
+              </Tooltip>
+            </TableHead>
             <TableHead className="w-8"/>
           </TableRow>
         </TableHeader>
@@ -52,29 +64,31 @@ export const TasksListView = ({ tasks, projectId }: TasksListViewProps) => {
             </TableRow>
           ) : (
             tasks.map((task) => (
-              <TableRow key={task.id} className="group">
+              <TableRow key={task.id} className="group" onClick={() => onTaskClick && onTaskClick(task)}>
                 <TableCell className="font-normal">{task.title}</TableCell>
-                <TableCell className="text-right">{formatDate(task.createdAt)}</TableCell>
-                <TableCell className="text-right">
+                <TableCell>{formatDate(task.createdAt)}</TableCell>
+                <TableCell>
                   <TaskStatusesMenuChanger
                     task={task}
                     onChange={handleUpdateTaskStatus}
                   />
                 </TableCell>
                 <TableCell>
-                  <ConfirmDeleteDialog
-                    onConfirm={() => handleDelete(task.id)}
-                    isLoading={deleteTaskMutation.isPending}
-                    trigger={
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
-                      >
-                        <Trash2 size={14} />
-                      </Button>
-                    }
-                  />
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <ConfirmDeleteDialog
+                      onConfirm={() => handleDelete(task.id)}
+                      isLoading={deleteTaskMutation.isPending}
+                      trigger={
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-4 w-4 text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                          <Trash2 size={14} />
+                        </Button>
+                      }
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))
