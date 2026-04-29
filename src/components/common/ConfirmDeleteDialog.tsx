@@ -11,30 +11,48 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2 } from "lucide-react";
-import type { ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 
 interface ConfirmDeleteDialogProps {
   itemName?: string;
   onConfirm: () => void;
   isLoading?: boolean;
   trigger?: ReactElement;
+  inline?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const ConfirmDeleteDialog = ({ 
   itemName, 
   onConfirm, 
   isLoading = false,
-  trigger 
+  trigger,
+  inline = false,
+  open = false,
+  onOpenChange
 }: ConfirmDeleteDialogProps) => {
+  const [isOpen, setIsOpen] = useState(inline && open)
+
+  useEffect(() => {
+    setIsOpen(open)
+  }, [open])
+
+  useEffect(() => {
+    onOpenChange && onOpenChange(isOpen)
+  }, [isOpen])
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        {trigger || (
-          <Button variant="destructive" size="icon" className="rounded-full">
-            <Trash2 size={18} />
-          </Button>
-        )}
-      </AlertDialogTrigger>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      {!inline && 
+        <AlertDialogTrigger asChild>
+          {trigger || (
+            <Button variant="destructive" size="icon" className="rounded-full">
+              <Trash2 size={18} />
+            </Button>
+          )}
+        </AlertDialogTrigger>
+      }
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

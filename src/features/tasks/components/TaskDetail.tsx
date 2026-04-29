@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, CheckCircle2, Clock, FileText, Info } from "lucide-react";
+import { Calendar, CheckCircle2, Clock, FileText } from "lucide-react";
 import { type Task, TaskPriority, TaskStatus } from "../types/task.types";
 import { useTasks } from "../hooks/useTasks";
 import { TaskStatusesMenuChanger } from "./TasksStatusesListChanger";

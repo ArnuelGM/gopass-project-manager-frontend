@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Calendar, Info, Loader2, AlertCircle } from 'lucide-react';
+import { ChevronLeft, Calendar, Info, Loader2, AlertCircle, EllipsisVertical, SquarePen, Trash2 } from 'lucide-react';
 import { useProjects } from '../features/projects/hooks/useProjects';
 import TaskManager from '@/features/tasks/components/TaskManager';
 import ConfirmDeleteDialog from '@/components/common/ConfirmDeleteDialog';
@@ -7,12 +7,16 @@ import { CreateTaskButtonDialog } from '@/features/tasks/components/CreateTaskBu
 import { useTasks } from '@/features/tasks/hooks/useTasks';
 import type { CreateTaskDto } from '@/features/tasks/types/task.types';
 import { toast } from 'sonner'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { projectQuery, deleteProjectMutation } = useProjects(id);
   const { data: project, isLoading, isError } = projectQuery;
   const { createTaskMutation } = useTasks(project?.id)
+  const [openModalDelete, setOpenModalDelete] = useState(false)
 
   const handleDelete = () => {
     if (id) {
@@ -70,10 +74,22 @@ const ProjectDetails = () => {
           </div>
         </div>
         <div className='ml-auto'>
-          <ConfirmDeleteDialog
-            onConfirm={handleDelete}
-            itemName={project.name}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size='icon'>
+                <EllipsisVertical size={24} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <SquarePen size={20}/> Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator/>
+              <DropdownMenuItem variant='destructive' onClick={() => setOpenModalDelete(true)}>
+                <Trash2 /> Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
@@ -106,6 +122,13 @@ const ProjectDetails = () => {
         {id && <TaskManager projectId={id} />}
       </div>
 
+      <ConfirmDeleteDialog
+        inline
+        open={openModalDelete}
+        onOpenChange={setOpenModalDelete}
+        onConfirm={handleDelete}
+        itemName={project.name}
+      />
     </div>
   );
 };
