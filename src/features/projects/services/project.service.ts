@@ -12,6 +12,11 @@ export const projectService = {
     return response.data;
   },
 
+  updateProject: async (id: string, updates: Partial<Project>): Promise<Project> => {
+    const { data } = await api.patch<Project>(`/projects/${id}`, updates);
+    return data;
+  },
+
   getProjectById: async (id: string): Promise<Project> => {
     const { data } = await api.get<Project>(`/projects/${id}`);
     return data;

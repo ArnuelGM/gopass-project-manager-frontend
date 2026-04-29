@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectService } from '../services/project.service';
-import { type CreateProjectDto } from '../types/project.types';
+import { type CreateProjectDto, type Project } from '../types/project.types';
 import { useNavigate } from 'react-router-dom';
 
 export const useProjects = (projectId?: string) => {
@@ -29,6 +29,16 @@ export const useProjects = (projectId?: string) => {
     },
   });
 
+  const updateProjectMutation = useMutation({
+    mutationFn: ({ id, updates }: { id: string; updates: Partial<Project> }) =>
+      projectService.updateProject(id, updates),
+    onSuccess: (updatedProject) => {
+      // Actualizamos el cache global y el específico del proyecto
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['project', updatedProject.id] });
+    },
+  });
+
   const deleteProjectMutation = useMutation({
     mutationFn: (id: string) => projectService.deleteProject(id),
     onSuccess: () => {
@@ -41,6 +51,7 @@ export const useProjects = (projectId?: string) => {
     projectsQuery,
     projectQuery,
     createProjectMutation,
+    updateProjectMutation,
     deleteProjectMutation,
   };
 };

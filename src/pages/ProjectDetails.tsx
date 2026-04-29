@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { EditProjectDialog } from '@/features/projects/components/EditProjectDialog';
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +18,7 @@ const ProjectDetails = () => {
   const { data: project, isLoading, isError } = projectQuery;
   const { createTaskMutation } = useTasks(project?.id)
   const [openModalDelete, setOpenModalDelete] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleDelete = () => {
     if (id) {
@@ -81,7 +83,7 @@ const ProjectDetails = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
                 <SquarePen size={20}/> Edit
               </DropdownMenuItem>
               <DropdownMenuSeparator/>
@@ -129,6 +131,14 @@ const ProjectDetails = () => {
         onConfirm={handleDelete}
         itemName={project.name}
       />
+
+      {project && (
+        <EditProjectDialog
+          project={project} 
+          isOpen={isEditOpen} 
+          onClose={() => setIsEditOpen(false)} 
+        />
+      )}
     </div>
   );
 };
