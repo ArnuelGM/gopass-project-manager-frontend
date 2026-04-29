@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { List, LayoutDashboard, Loader2 } from 'lucide-react';
+import { List, LayoutDashboard, Loader2, TableOfContents, Kanban } from 'lucide-react';
 import { useTasks } from '../hooks/useTasks';
 import { TasksListView } from './TasksListView';
 import { TasksBoardView } from './TasksBoardView';
@@ -39,10 +39,10 @@ const TaskManager = ({ projectId }: TaskManagerProps) => {
           <div className="flex justify-between items-center mb-4">
             <TabsList variant='line'>
               <TabsTrigger value="list" className="flex gap-2">
-                <List size={16} /> List
+                <TableOfContents size={16} /> List
               </TabsTrigger>
               <TabsTrigger value="board" className="flex gap-2">
-                <LayoutDashboard size={16} /> Board
+                <Kanban size={16} /> Board
               </TabsTrigger>
             </TabsList>
           </div>
