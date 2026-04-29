@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Loader2 } from 'lucide-react';
 import type { CreateTaskDto } from "../types/task.types"
+import { Textarea } from "@/components/ui/textarea"
 
 interface CreateTaskButtonDialogProps {
   projectId: string;
@@ -58,7 +59,7 @@ export const CreateTaskButtonDialog = ({ disabled, onSubmit, isPending, projectI
               </Field>
               <Field>
                 <Label htmlFor="description">Description</Label>
-                <Input form="new-task-form" name="description" type="text" placeholder="Task description" />
+                <Textarea className="min-h-[120px]" form="new-task-form" name="description" placeholder="Task description"/>
               </Field>
             </FieldGroup>
           </form>

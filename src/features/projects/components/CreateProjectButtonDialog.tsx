@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus, Loader2 } from 'lucide-react';
 import type { CreateProjectDto } from "../types/project.types"
+import { Textarea } from "@/components/ui/textarea"
 
 interface CreateProjectButtonDialogProps {
   disabled: boolean;
@@ -56,7 +57,7 @@ export const CreateProjectButtonDialog = ({ disabled, onSubmit, isPending }: Cre
               </Field>
               <Field>
                 <Label htmlFor="description">Description</Label>
-                <Input form="new-project-form" name="description" type="text" placeholder="Project description" />
+                <Textarea className="min-h-[120px]" form="new-project-form" name="description" placeholder="Project description"/>
               </Field>
             </FieldGroup>
           </form>

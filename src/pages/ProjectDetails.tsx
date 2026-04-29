@@ -102,9 +102,9 @@ const ProjectDetails = () => {
             <Info size={20} />
           </div>
           <div>
-            <p className="text-gray-700 mt-1 leading-relaxed">
+            <pre className="text-gray-700 mt-1 leading-relaxed font-sans">
               {project.description || 'No description provided for this project.'}
-            </p>
+            </pre>
           </div>
         </div>
       </div>
