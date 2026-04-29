@@ -20,6 +20,8 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
   const formatDate = (date: string) => new Date(date).toLocaleDateString(undefined, {
     month: 'short',
     day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   });
 
   const handleDelete = (id: string) => {
@@ -66,7 +68,7 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
             tasks.map((task) => (
               <TableRow key={task.id} className="group" onClick={() => onTaskClick && onTaskClick(task)}>
                 <TableCell className="font-normal">{task.title}</TableCell>
-                <TableCell>{formatDate(task.createdAt)}</TableCell>
+                <TableCell className="text-slate-400">{formatDate(task.createdAt)}</TableCell>
                 <TableCell>
                   <TaskStatusesMenuChanger
                     task={task}

@@ -18,6 +18,8 @@ const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
   const formattedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
     month: 'short',
     day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   });
 
   const handleDelete = () => {
@@ -34,7 +36,7 @@ const TaskBoardItem = ({ task, onTaskClick }: TaskBoardItemProps) => {
       <CardFooter className="px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2 text-[12px] font-medium text-gray-400">
           <Calendar size={12} />
-          <span>{formattedDate}</span>
+          <span>Created on {formattedDate}</span>
         </div>
 
         <div onClick={(e) => e.stopPropagation()}>
