@@ -33,5 +33,6 @@ export interface CreateTaskDto {
   projectId: string;
   description?: string | null;
   status?: TaskStatus;
+  priority?: TaskPriority;
   finishDate?: string | null;
 }
