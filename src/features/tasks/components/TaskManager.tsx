@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { List, LayoutDashboard, Loader2, TableOfContents, Kanban } from 'lucide-react';
+import { Loader2, TableOfContents, Kanban } from 'lucide-react';
 import { useTasks } from '../hooks/useTasks';
 import { TasksListView } from './TasksListView';
 import { TasksBoardView } from './TasksBoardView';
