@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { taskService } from '../services/task.service';
-import type { CreateTaskDto } from '../types/task.types';
+import type { CreateTaskDto, Task } from '../types/task.types';
 
 export const useTasks = (projectId: string) => {
   const queryClient = useQueryClient();
@@ -18,6 +18,14 @@ export const useTasks = (projectId: string) => {
     },
   });
 
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ taskId, updates }: { taskId: string, updates: Partial<Task> }) => 
+      taskService.updateTask(taskId, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', projectId] });
+    },
+  });
+
   const deleteTaskMutation = useMutation({
     mutationFn: (id: string) => taskService.deleteTask(id),
     onSuccess: () => {
@@ -28,6 +36,7 @@ export const useTasks = (projectId: string) => {
   return {
     ...tasksQuery,
     createTaskMutation,
+    updateTaskMutation,
     deleteTaskMutation
   }
 };

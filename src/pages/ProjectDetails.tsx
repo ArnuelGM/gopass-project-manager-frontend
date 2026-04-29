@@ -11,7 +11,7 @@ const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { projectQuery, deleteProjectMutation } = useProjects(id);
   const { data: project, isLoading, isError } = projectQuery;
-  const { createTaskMutation, isPending: tasksPending } = useTasks(project.id)
+  const { createTaskMutation, isPending: tasksPending } = useTasks(project?.id)
 
   const handleDelete = () => {
     if (id) {

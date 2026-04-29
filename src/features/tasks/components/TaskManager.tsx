@@ -45,7 +45,7 @@ const TaskManager = ({ projectId }: TaskManagerProps) => {
 
         {/* List View */}
         <TabsContent value="list">
-          <TasksListView tasks={tasks} />
+          <TasksListView tasks={tasks} projectId={projectId} />
         </TabsContent>
 
         {/* Board View (Placeholder) */}
