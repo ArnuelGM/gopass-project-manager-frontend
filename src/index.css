@@ -54,6 +54,7 @@ body {
 /* Suavizado de scroll para una mejor experiencia de usuario */
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 @theme inline {
