@@ -1,12 +1,6 @@
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuGroup,
-  ContextMenuRadioItem,
-  ContextMenuTrigger 
-} from "@/components/ui/context-menu";
 import { TaskPriority, type Task } from "../types/task.types"
 import { Badge } from "@/components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export interface TaskPriorityMenuChangerProps {
   task: Task;
@@ -31,27 +25,24 @@ export const TaskPriorityMenuChanger = ({ task, onChange }: TaskPriorityMenuChan
   };
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger className="cursor-pointer">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
         {getPriorityBadge(task.priority)}
-      </ContextMenuTrigger>
-      <ContextMenuContent className="w-48">
-        <ContextMenuGroup>
-          {TASKS_PRIORITIES.map((taskPriority) => (
-            <ContextMenuRadioItem 
-              value={taskPriority}
-              className="cursor-pointer"
-              onClick={(event) => {
-                event.stopPropagation();
-                if(taskPriority === task.priority) return;
-                onChange(task, taskPriority);
-              }}
-            >
-              {getPriorityBadge(taskPriority)}
-            </ContextMenuRadioItem>
-          ))}
-        </ContextMenuGroup>
-      </ContextMenuContent>
-    </ContextMenu>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {TASKS_PRIORITIES.map((taskPriority) => (
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={(event) => {
+              event.stopPropagation();
+              if(taskPriority === task.priority) return;
+              onChange(task, taskPriority);
+            }}
+          >
+            {getPriorityBadge(taskPriority)}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

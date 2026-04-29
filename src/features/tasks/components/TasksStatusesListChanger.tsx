@@ -1,6 +1,6 @@
-import { ContextMenu, ContextMenuContent, ContextMenuGroup, ContextMenuRadioItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { TaskStatus, type Task } from "../types/task.types"
 import { Badge } from "@/components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export interface TaskStatusesMenuChangerProps {
   task: Task;
@@ -29,15 +29,13 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
   };
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger className="cursor-pointer">
+    <DropdownMenu>
+      <DropdownMenuTrigger className="cursor-pointer">
         {getStatusBadge(task.status)}
-      </ContextMenuTrigger>
-      <ContextMenuContent className="w-48">
-        <ContextMenuGroup>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-48">
           {TASKS_STATUSES.map((taskStatus) => (
-            <ContextMenuRadioItem
-              value={taskStatus}
+            <DropdownMenuItem
               className="cursor-pointer"
               onClick={(event) => {
                 event.stopPropagation();
@@ -46,10 +44,9 @@ export const TaskStatusesMenuChanger = ({ task, onChange }: TaskStatusesMenuChan
               }}
             >
               {getStatusBadge(taskStatus)}
-            </ContextMenuRadioItem>
+            </DropdownMenuItem>
           ))}
-        </ContextMenuGroup>
-      </ContextMenuContent>
-    </ContextMenu>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
