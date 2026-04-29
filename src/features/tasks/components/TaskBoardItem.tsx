@@ -4,16 +4,15 @@ import { type Task } from '../types/task.types';
 import ConfirmDeleteDialog from "@/components/common/ConfirmDeleteDialog";
 import { useTasks } from "../hooks/useTasks";
 import { Button } from "@/components/ui/button";
+import { useDraggable } from "@dnd-kit/react";
 
 interface TaskBoardItemProps {
   task: Task;
 }
 
-/**
- * Representación individual de una tarea dentro de los carriles del tablero.
- */
 const TaskBoardItem = ({ task }: TaskBoardItemProps) => {
   const { deleteTaskMutation } = useTasks(task.projectId);
+  const { ref } = useDraggable({ id: task.id, data: task })
 
   const formattedDate = new Date(task.createdAt).toLocaleDateString(undefined, {
     month: 'short',
@@ -25,7 +24,7 @@ const TaskBoardItem = ({ task }: TaskBoardItemProps) => {
   }
 
   return (
-    <Card className="bg-white border-0 mt-px group">
+    <Card className="bg-white border-0 mt-px group" ref={ref}>
       <CardHeader>
         <CardTitle>
           <h4 className="font-normal text-sm text-gray-800 leading-snug">{task.title}</h4>
