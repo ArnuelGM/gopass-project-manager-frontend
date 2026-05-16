@@ -57,7 +57,7 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
                   Priority
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Right click on any priority to change</p>
+                  <p>Click on any priority to change.</p>
                 </TooltipContent>
               </Tooltip>
             </TableHead>
@@ -69,7 +69,7 @@ export const TasksListView = ({ tasks, projectId, onTaskClick }: TasksListViewPr
                   Status
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Right click on any status to change</p>
+                  <p>Click on any status to change.</p>
                 </TooltipContent>
               </Tooltip>
             </TableHead>
